@@ -10,9 +10,14 @@ class Emitter extends React.Component {
 }
 
 class Listener extends React.Component {
+    state = {
+        text: "Initial text, lol"
+    };
+    _handleButtonClicked = () => {
+        this.setState({text: "You clicked a button"});
+    };
     render() {
-        return <div>{ this.props.textChanged ?
-                        "You clicked a button" : "Initial text, lol" }</div>;
+        return <div>{ this.state.text }</div>;
     }
 }
 
@@ -22,13 +27,13 @@ class App extends React.Component  {
     };
 
     _handleButtonClickParent = () => {
-        this.setState({textChanged: true})
+        this.listener._handleButtonClicked();
     };
 
     render() {
         return <div className="App">
             <Emitter _handleButtonClickParent={this._handleButtonClickParent}/>
-            <Listener textChanged={this.state.textChanged}/>
+            <Listener  ref={ref => { this.listener = ref; }} />
         </div>
     }
 }
