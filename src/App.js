@@ -2,31 +2,35 @@ import React from 'react';
 import './App.css';
 
 class Emitter extends React.Component {
-    _handleButtonClick() {
-        console.log('clicked')
-    }
     render() {
-        return <button onClick={this._handleButtonClick}>Click me</button>;
+        return <button onClick={this.props._handleButtonClickParent}>
+            Click me
+        </button>;
     }
 }
 
 class Listener extends React.Component {
-    state = {
-        text: 'Initial text, lol',
-    };
-
     render() {
-        return <div>{ this.state.text }</div>;
+        return <div>{ this.props.textChanged ?
+                        "You clicked a button" : "Initial text, lol" }</div>;
     }
 }
 
-function App() {
-    return (
-        <div className="App">
-            <Emitter />
-            <Listener/>
+class App extends React.Component  {
+    state = {
+        textChanged: false,
+    };
+
+    _handleButtonClickParent = () => {
+        this.setState({textChanged: true})
+    };
+
+    render() {
+        return <div className="App">
+            <Emitter _handleButtonClickParent={this._handleButtonClickParent}/>
+            <Listener textChanged={this.state.textChanged}/>
         </div>
-    );
+    }
 }
 
 export default App;
