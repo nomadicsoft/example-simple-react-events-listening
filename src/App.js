@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+class Emitter extends React.Component {
+    _handleButtonClick() {
+        console.log('clicked')
+    }
+    render() {
+        return <button onClick={this._handleButtonClick}>Click me</button>;
+    }
+}
+
+class Listener extends React.Component {
+    state = {
+        text: 'Initial text, lol',
+    };
+
+    render() {
+        return <div>{ this.state.text }</div>;
+    }
+}
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Emitter />
+            <Listener/>
+        </div>
+    );
 }
 
 export default App;
