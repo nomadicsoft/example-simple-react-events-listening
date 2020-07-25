@@ -2,8 +2,13 @@ import React from 'react';
 import './App.css';
 
 class Emitter extends React.Component {
+    _handleButtonClick = () => {
+        const event = new CustomEvent('button-clicked');
+        window.dispatchEvent(event);
+    };
+
     render() {
-        return <button onClick={this.props._handleButtonClickParent}>
+        return <button onClick={this._handleButtonClick}>
             Click me
         </button>;
     }
@@ -13,27 +18,22 @@ class Listener extends React.Component {
     state = {
         text: "Initial text, lol"
     };
-    _handleButtonClicked = () => {
-        this.setState({text: "You clicked a button"});
-    };
+    componentDidMount() {
+        window.addEventListener('button-clicked', () => {
+            this.setState({text: "You clicked a button"})
+        })
+    }
+
     render() {
         return <div>{ this.state.text }</div>;
     }
 }
 
 class App extends React.Component  {
-    state = {
-        textChanged: false,
-    };
-
-    _handleButtonClickParent = () => {
-        this.listener._handleButtonClicked();
-    };
-
     render() {
         return <div className="App">
-            <Emitter _handleButtonClickParent={this._handleButtonClickParent}/>
-            <Listener  ref={ref => { this.listener = ref; }} />
+            <Emitter/>
+            <Listener/>
         </div>
     }
 }
